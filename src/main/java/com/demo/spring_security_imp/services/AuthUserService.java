@@ -7,4 +7,6 @@ import java.util.ArrayList;
 public interface AuthUserService {
     public UserDto registerUser(UserDto userDto);
     public ArrayList<UserDto> getAllUsers();
+
+    UserDto loginUser(UserDto userDto);
 }

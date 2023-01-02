@@ -44,4 +44,17 @@ public class AuthUserServiceImp implements AuthUserService {
         }
         return userDtos;
     }
+
+    @Override
+    public UserDto loginUser(UserDto userDto) {
+        User user = authUsers.findByEmail(userDto.getEmail());
+        if (user != null) {
+            if (passwordEncoder.matches(userDto.getPassword(), user.getPassword())) {
+                UserDto loggedInUserDto = new UserDto();
+                BeanUtils.copyProperties(user, loggedInUserDto);
+                return loggedInUserDto;
+            }
+        }
+        return null;
+    }
 }

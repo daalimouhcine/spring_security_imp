@@ -40,4 +40,14 @@ public class AuthUserController {
         }
         return new ResponseEntity<ArrayList<UserResponse>>(userResponses, HttpStatus.OK);
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<UserResponse> loginUser(@RequestBody UserRequest userRequest) {
+        UserDto userDto = new UserDto();
+        BeanUtils.copyProperties(userRequest, userDto);
+        UserDto loggedInUser = authUserService.loginUser(userDto);
+        UserResponse userResponse = new UserResponse();
+        BeanUtils.copyProperties(loggedInUser, userResponse);
+        return new ResponseEntity<UserResponse>(userResponse, HttpStatus.OK);
+    }
 }
