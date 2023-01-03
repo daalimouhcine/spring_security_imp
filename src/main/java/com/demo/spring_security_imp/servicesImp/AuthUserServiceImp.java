@@ -57,4 +57,12 @@ public class AuthUserServiceImp implements AuthUserService {
         }
         return null;
     }
+
+    @Override
+    public UserDto findByEmail(String email) {
+        UserDto userDto = new UserDto();
+        User user = authUsers.findByEmail(email);
+        BeanUtils.copyProperties(user, userDto);
+        return userDto;
+    }
 }
