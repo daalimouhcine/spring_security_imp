@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.util.Collections;
 
@@ -26,6 +27,9 @@ import java.util.Collections;
 public class SecurityConfig {
     @Autowired
     private AuthUserService authUserService;
+
+    @Autowired
+    private JWTAuthFilter jwtAuthFilter;
 
 
 
@@ -48,7 +52,8 @@ public class SecurityConfig {
                 .anyRequest()
                 .authenticated()
                 .and()
-                .authenticationProvider()
+                .authenticationProvider(authenticationProvider())
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
@@ -70,8 +75,7 @@ public class SecurityConfig {
                 if(userDto == null) {
                     return null;
                 }
-                UserDetails userAuth = new User(userDto.getEmail(), userDto.getPassword(), Collections.singleton(new SimpleGrantedAuthority("USER")));
-
+                UserDetails userAuth = new User(userDto.getEmail(), userDto.getPassword(), Collections.singleton(new SimpleGrantedAuthority(userDto.getRole())));
                 return userAuth;
             }
         };
