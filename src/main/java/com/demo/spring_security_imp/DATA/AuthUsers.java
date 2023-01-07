@@ -29,12 +29,4 @@ public class AuthUsers {
         return null;
     }
 
-    public User findByUsername(String userName) {
-        for (User user : users.values()) {
-            if (user.getUserName().equals(userName)) {
-                return user;
-            }
-        }
-        return null;
-    }
 }
